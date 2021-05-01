@@ -18,5 +18,6 @@ namespace WebAPI.Framework.Models.NorthwindDB
         public string Name { get; set; }
         public Nullable<int> idState { get; set; }
         public Nullable<int> Patas { get; set; }
+        public byte[] Picture { get; set; }
     }
 }

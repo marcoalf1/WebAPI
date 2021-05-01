@@ -10,6 +10,8 @@ namespace WebAPI.Framework.Controllers
 {
     public class BaseController : ApiController
     {
+        public string error = "";
+
         public bool Verify(string token) 
         {
             using (NorthwindDBCon db = new NorthwindDBCon()) 

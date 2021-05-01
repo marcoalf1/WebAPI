@@ -13,6 +13,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="idState" Type="int" />
           <Property Name="Patas" Type="int" />
+          <Property Name="Picture" Type="image" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -54,6 +55,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="idState" Type="Int32" />
           <Property Name="Patas" Type="Int32" />
+          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -75,6 +77,7 @@
           <EntitySetMapping Name="Animals">
             <EntityTypeMapping TypeName="NorthwindModel.Animals">
               <MappingFragment StoreEntitySet="Animals">
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
                 <ScalarProperty Name="Patas" ColumnName="Patas" />
                 <ScalarProperty Name="idState" ColumnName="idState" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
