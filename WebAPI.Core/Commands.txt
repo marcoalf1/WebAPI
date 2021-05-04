@@ -1,0 +1,25 @@
+﻿SINTAXIS
+    Scaffold-DbContext [-Connection] <String> [-Provider] <String> [-OutputDir <String>] [-ContextDir <String>] [-Context <String>] [-Schemas <String[]>] [-Tables <String[]>] [-DataAnnotations] [-UseDatabaseNames] [-Force] 
+    [-Project <String>] [-StartupProject <String>] [<CommonParameters>]
+
+
+1. CREAR CONTEXTO DE BASE DE DATOS NORTHWIND
+Scaffold-DbContext -Connection "Data Source=DIIN-MAHERNANDE\SQLDEV2016;Initial Catalog=Northwind;Integrated Security=True;" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir "D:\Proyectos Desarrollo\WebAPI\WebAPI.Core\Models\NorthwindDB\" -Tables Categories,CustomerCustomerDemo,CustomerDemographics,Customers,Employees,EmployeeTerritories,OrderDetails,Orders,Products,Region,Shippers,Suppliers,Territories,Users -Verbose -Project WebAPI.Core
+
+2. CONFIGURAR CADENA DE CONEXION EN EL APPSETTINGS
+    Data Source=DIIN-MAHERNANDE\\SQLDEV2016;Initial Catalog=Northwind;Integrated Security=True;
+
+    "NorthwindCon": "Data Source=DIIN-MAHERNANDE\\SQLDEV2016;Initial Catalog=Northwind;Integrated Security=True;"
+
+3. CONFIGURAR EL STARTUP: Se agrega la cadena de conexion y se asocia con el contexto.
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            string northwindConnectionString = Configuration.GetConnectionString("NorthwindCon");
+
+            services.AddDbContext<NorthwindDBContext>(options =>
+                                options.UseSqlServer(northwindConnectionString));
+
+            services.AddControllers();
+        }
+
