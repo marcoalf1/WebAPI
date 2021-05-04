@@ -6,17 +6,23 @@ namespace WebAPI.Core.Repository
 {
     public class CategoryRepo : ICategoryRepo
     {
-        private readonly NorthwindDBContext db = new NorthwindDBContext();
-        public IEnumerable<Categories> GetCategories()
-        {
-            var categories = db.Categories;
+        private readonly NorthwindDBContext _db;
 
-            return categories.ToList();
+        public CategoryRepo(NorthwindDBContext db)
+        {
+            _db = db;
+        }
+
+        public IEnumerable<Categories> GetAllCategories()
+        {
+            var categories = _db.Categories;
+
+            return categories;
         }
 
         public Categories GetCategory(int id)
         {
-            var category = db.Categories.Find(id);
+            var category = _db.Categories.Find(id);
 
             return category;
         }

@@ -8,7 +8,7 @@ namespace WebAPI.Core.Repository
 {
     public interface ICategoryRepo
     {
-        IEnumerable<Categories> GetCategories();
+        IEnumerable<Categories> GetAllCategories();
         Categories GetCategory(int id);
         
     }
