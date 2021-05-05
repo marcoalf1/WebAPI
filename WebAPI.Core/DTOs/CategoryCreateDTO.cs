@@ -3,9 +3,8 @@ using WebAPI.Core.Models.Helpers;
 
 namespace WebAPI.Core.DTOs
 {
-    public class CategoryCreateDTO : AuditEntity
-    {        
-        public int CategoryId { get; set; }
+    public class CategoryReadDTO : AuditEntity
+    {
         public string CategoryName { get; set; }
         public string Description { get; set; }
         public byte[] Picture { get; set; }

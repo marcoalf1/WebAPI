@@ -8,8 +8,11 @@ namespace WebAPI.Core.Repository
 {
     public interface ICategoryRepo
     {
+        bool SaveChanges();
+        
         IEnumerable<Categories> GetAllCategories();
         Categories GetCategory(int id);
+        void CreateCategory(Categories category);
         
     }
 }
