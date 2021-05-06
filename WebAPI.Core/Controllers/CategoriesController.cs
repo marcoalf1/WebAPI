@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Core.DTOs;
 using WebAPI.Core.Models.NorthwindDB;
@@ -33,7 +34,7 @@ namespace WebAPI.Core.Controllers
 
         //GET: api/Categories/{id}
         [HttpGet("{id}")]
-        public ActionResult <CategoryReadDTO> GetCategoryById([FromForm] int id)
+        public ActionResult <CategoryReadDTO> GetCategoryById(int id)
         {
             var category = _repo.GetCategory(id);
 
@@ -47,13 +48,16 @@ namespace WebAPI.Core.Controllers
 
         //POST: api/Categories
         [HttpPost]
-        public ActionResult <CategoryReadDTO> CreateCategory([FromBody] CategoryCreateDTO categoryCreateDTO)
+        public ActionResult<CategoryReadDTO> CreateCategory(CategoryCreateDTO categoryCreateDTO)
         {
+            
             var categoryModel = _mapper.Map<Categories>(categoryCreateDTO);
             _repo.CreateCategory(categoryModel);
             _repo.SaveChanges();
 
-            return Ok(categoryModel);
+            var categoryReadDTO = _mapper.Map<CategoryReadDTO>(categoryModel);
+
+            return Ok(categoryReadDTO);
         }
 
     }

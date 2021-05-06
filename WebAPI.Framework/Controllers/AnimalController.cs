@@ -251,7 +251,6 @@ namespace WebAPI.Framework.Controllers
 
         }
 
-
         #region Helpers
         private bool Validate(AnimalViewModel model) 
         {
