@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,26 @@ namespace WebAPI.Core.Repository
 
         public bool SaveChanges()
         {
-            return (_db.SaveChanges() >=0 );
+            try
+            {
+                return (_db.SaveChanges() >= 0);
+            }
+            catch (Exception ex)
+            {
+                foreach (var entry in _db.ChangeTracker.Entries().Where(e => e.State != EntityState.Unchanged))
+                {
+                    foreach (var prop in entry.CurrentValues.Properties)
+                    {
+                        var val = prop.PropertyInfo.GetValue(entry.Entity);
+                        
+                        Console.WriteLine($"{prop.ToString()} ~ ({val?.ToString().Length})({val})");
+                    }
+                }
+
+                return _db.SaveChanges() >= 0;
+
+            }
+            
         }
     }
 }

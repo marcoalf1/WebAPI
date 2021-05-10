@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -48,14 +50,32 @@ namespace WebAPI.Core.Controllers
 
         //POST: api/Categories
         [HttpPost]
-        public ActionResult<CategoryReadDTO> CreateCategory(CategoryCreateDTO categoryCreateDTO)
+        public ActionResult<CategoryReadDTO> CreateCategory([FromForm] CategoryCreateDTO categoryCreateDTO)
         {
-            
+            var files = categoryCreateDTO.Files;
+
+            // Saving Image on Database
+            if (files.Length > 0)
+            {
+                //using (var fs = new FileStream(files.FileName, FileMode.Create))
+                using (var fs = new FileStream(files.FileName, FileMode.Open,FileAccess.Read))
+                {
+                    //files.CopyTo(fs);
+                    
+                    categoryCreateDTO.Picture = new byte[fs.Length]; //fileStream.ToArray();
+                    fs.Read(categoryCreateDTO.Picture, 0, Convert.ToInt32(fs.Length));
+                }
+            }
+
             var categoryModel = _mapper.Map<Categories>(categoryCreateDTO);
             _repo.CreateCategory(categoryModel);
             _repo.SaveChanges();
 
             var categoryReadDTO = _mapper.Map<CategoryReadDTO>(categoryModel);
+
+            // Decodificar base64 online
+            // https://base64.guru/converter/decode/image
+            // https://codebeautify.org/base64-to-image-converter
 
             return Ok(categoryReadDTO);
         }
