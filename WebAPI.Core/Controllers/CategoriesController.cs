@@ -5,6 +5,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebAPI.Core.DTOs;
 using WebAPI.Core.Models.NorthwindDB;
@@ -19,12 +20,14 @@ namespace WebAPI.Core.Controllers
         private readonly ICategoryRepo _repo;
         private readonly IMapper _mapper;
         private readonly ILogger<CategoriesController> _logger;
+        private readonly IHostEnvironment _hostEnvironment;
 
-        public CategoriesController(ICategoryRepo repo, IMapper mapper, ILogger<CategoriesController> logger)
+        public CategoriesController(ICategoryRepo repo, IMapper mapper, ILogger<CategoriesController> logger, IHostEnvironment hostEnvironment)
         {
             _repo = repo;
             _mapper = mapper;
             _logger = logger;
+            _hostEnvironment = hostEnvironment;
         }
 
         //GET: api/Categories
@@ -55,18 +58,30 @@ namespace WebAPI.Core.Controllers
         [HttpPost]
         public ActionResult<CategoryReadDTO> CreateCategory([FromForm] CategoryCreateDTO categoryCreateDTO)
         {
-            var files = categoryCreateDTO.Files;
-
-            // Saving Image on Database
-            // Solo funciona cuando la imagen se encuentra en el directorio del proyecto.
-            if (files.Length > 0)
+            // SUBE UNA SOLA IMAGEN A UN CAMPO DE TIPO Byte[] en una tabla
+            if (categoryCreateDTO.Files.FileName != null)
             {
-                using (var fs = new FileStream(files.FileName,FileMode.Open,FileAccess.Read))
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    categoryCreateDTO.Picture = new byte[fs.Length]; //fileStream.ToArray();
-                    fs.Read(categoryCreateDTO.Picture, 0, Convert.ToInt32(fs.Length));
+
+                    categoryCreateDTO.Files.OpenReadStream().CopyTo(ms);
+                    // return arreglo de bytes
+                    categoryCreateDTO.Picture = ms.ToArray();
                 }
             }
+
+            //// Saving Image on Database
+            //// Solo funciona cuando la imagen se encuentra en el directorio del proyecto.
+
+            ////var files = categoryCreateDTO.Files;
+            //if (files.Length > 0)
+            //{
+            //    using (var fs = new FileStream(files.FileName,FileMode.Open,FileAccess.Read))
+            //    {
+            //        categoryCreateDTO.Picture = new byte[fs.Length]; //fileStream.ToArray();
+            //        fs.Read(categoryCreateDTO.Picture, 0, Convert.ToInt32(fs.Length));
+            //    }
+            //}
 
             var categoryModel = _mapper.Map<Categories>(categoryCreateDTO);
             _repo.CreateCategory(categoryModel);
