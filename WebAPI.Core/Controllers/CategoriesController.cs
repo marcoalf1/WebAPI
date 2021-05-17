@@ -5,6 +5,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebAPI.Core.DTOs;
 using WebAPI.Core.Models.NorthwindDB;
 using WebAPI.Core.Repository;
@@ -17,11 +18,13 @@ namespace WebAPI.Core.Controllers
     {
         private readonly ICategoryRepo _repo;
         private readonly IMapper _mapper;
+        private readonly ILogger<CategoriesController> _logger;
 
-        public CategoriesController(ICategoryRepo repo, IMapper mapper)
+        public CategoriesController(ICategoryRepo repo, IMapper mapper, ILogger<CategoriesController> logger)
         {
             _repo = repo;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //GET: api/Categories
@@ -55,13 +58,11 @@ namespace WebAPI.Core.Controllers
             var files = categoryCreateDTO.Files;
 
             // Saving Image on Database
+            // Solo funciona cuando la imagen se encuentra en el directorio del proyecto.
             if (files.Length > 0)
             {
-                //using (var fs = new FileStream(files.FileName, FileMode.Create))
-                using (var fs = new FileStream(files.FileName, FileMode.Open,FileAccess.Read))
+                using (var fs = new FileStream(files.FileName,FileMode.Open,FileAccess.Read))
                 {
-                    //files.CopyTo(fs);
-                    
                     categoryCreateDTO.Picture = new byte[fs.Length]; //fileStream.ToArray();
                     fs.Read(categoryCreateDTO.Picture, 0, Convert.ToInt32(fs.Length));
                 }

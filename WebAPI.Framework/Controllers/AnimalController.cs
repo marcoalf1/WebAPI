@@ -23,7 +23,7 @@ namespace WebAPI.Framework.Controllers
             oR.Result = 0;
 
             if (!Verify(model.token))
-            {
+            { 
                 oR.Message = "No Autorizado";
                 return oR;
             }
