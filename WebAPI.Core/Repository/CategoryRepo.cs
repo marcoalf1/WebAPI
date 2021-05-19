@@ -26,6 +26,14 @@ namespace WebAPI.Core.Repository
 
         }
 
+        public void UpdateCategory(Categories category)
+        {
+
+
+            // Nothing
+            //throw new NotImplementedException();
+        }
+
         public IEnumerable<Categories> GetAllCategories()
         {
             var categories = _db.Categories;
@@ -33,7 +41,7 @@ namespace WebAPI.Core.Repository
             return categories;
         }
 
-        public Categories GetCategory(int id)
+        public Categories GetCategoryById(int id)
         {
             var category = _db.Categories.Find(id);
 
@@ -62,6 +70,17 @@ namespace WebAPI.Core.Repository
 
             }
             
+        }
+
+        public void DeleteCategory(Categories category)
+        {
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+            
+            _db.Categories.Remove(category);
+
         }
     }
 }

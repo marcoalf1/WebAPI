@@ -10,7 +10,8 @@ namespace WebAPI.Core.Profiles
         {
             // Source -> Target
             CreateMap<Categories, CategoryReadDTO>();
-            CreateMap<CategoryCreateDTO, Categories>();            
+            CreateMap<CategoryCreateDTO, Categories>();
+            CreateMap<CategoryUpdateDTO, Categories>();
         }
     }
     

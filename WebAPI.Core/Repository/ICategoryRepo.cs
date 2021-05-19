@@ -11,8 +11,10 @@ namespace WebAPI.Core.Repository
         bool SaveChanges();
         
         IEnumerable<Categories> GetAllCategories();
-        Categories GetCategory(int id);
+        Categories GetCategoryById(int id);
         void CreateCategory(Categories category);
+        void UpdateCategory(Categories category);
+        void DeleteCategory(Categories category);
         
     }
 }

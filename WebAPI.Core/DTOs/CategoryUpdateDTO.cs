@@ -5,7 +5,7 @@ using WebAPI.Core.Models.Helpers;
 
 namespace WebAPI.Core.DTOs
 {
-    public class CategoryCreateDTO : AuditEntity
+    public class CategoryUpdateDTO : AuditEntity
     {
         [Required]
         [MaxLength(250)]
