@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WebAPI.Core.DTOs;
+using WebAPI.Core.Models;
 using WebAPI.Core.Models.NorthwindDB;
 using WebAPI.Core.Repository;
 
